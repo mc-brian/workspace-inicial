@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>eMercado - Todo lo que busques está aquí</title>
+  <title>eMercado - Productos</title>
 
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
             <a class="nav-link" href="index.html">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
+            <a class="nav-link active" href="products.html">Productos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
@@ -36,12 +36,16 @@
       </div>
     </div>
   </nav>
-  <main class="pb-5 container">
+  <main class="pb-5">
+    <div class="text-center p-4">
+      <h2>Productos</h2>
+      <p class="lead">Verás aquí todos los productos de la categoría seleccionada.</p>
+    </div>
     <div class="container">
-   <h2 class="my-4">Productos de la categoría Autos</h2>
-    <div id="product-list" class="row">
-      <!-- acá van los productos -->
-    </div>
+      <div class="row">
+        <div class="list-group" id="product-list-container">
+        </div>
+      </div>
     </div>
   </main>
   <footer class="text-muted">
