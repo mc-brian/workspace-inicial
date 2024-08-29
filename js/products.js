@@ -1,29 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("https://japceibal.github.io/emercado-api/cats_products/101.json")
-      .then(response => response.json())
-      .then(data => {
-          let productListContainer = document.getElementById("product-list-container");
-          productListContainer.innerHTML = "";
-
-          data.products.forEach(product => {
-              let productHTML = `
-                  <a href="#" class="list-group-item list-group-item-action">
-                      <div class="row">
-                          <div class="col-3">
-                              <img src="${product.image}" alt="${product.name}" class="img-thumbnail">
-                          </div>
-                          <div class="col">
-                              <div class="d-flex w-100 justify-content-between">
-                                  <h4 class="mb-1">${product.name}</h4>
-                                  <small class="text-muted" style="font-size: 1.5em;">${product.currency} ${product.cost}</small>
-                              </div>
-                              <p class="mb-1">${product.description}</p>
-                              <p class="mb-1" style="font-size: 0.9em; color: #6c757d;"><strong>Cantidad vendidos:</strong> ${product.soldCount}</p>
-                          </div>
-                      </div>
-                  </a>`;
-              productListContainer.innerHTML += productHTML;
-          });
-      })
-      .catch(error => console.error("Error en fetch:", error));
+    fetch("https://japceibal.github.io/emercado-api/cats_products/101.json")
+        .then(response => response.json())
+        .then(data => {
+            let productListContainer = document.getElementById("product-list-container");
+            productListContainer.innerHTML = "";
+            
+            data.products.forEach(product => {
+                let productHTML = `
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text flex-grow-1">${product.description}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">${product.currency} ${product.cost}</span>
+                                    <small class="text-muted">Vendidos: ${product.soldCount}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                productListContainer.innerHTML += productHTML;
+            });
+        })
+        .catch(error => console.error("Error en fetch:", error));
 });
