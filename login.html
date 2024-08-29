@@ -17,33 +17,40 @@
 </head>
 <body>
   <main class="mt-5">
-    <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <div class="form-group">
-          <div class="mb-3">
-            <label for="usuario" class="form-label">Usuario:</label>
-            <input type="text" id="usuario" class="form-control" placeholder="Escribe aquí">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-lg-6 col-md-8 col-sm-10 col-12">
+                  <div class="alert alert-danger" role="alert">
+                      <form>
+                          <div class="mb-3">
+                              <label for="usuario" class="form-label">Usuario:</label>
+                              <input type="text" id="usuario" class="form-control" placeholder="Escribe aquí">
+                          </div>
+                          <div class="mb-4">
+                              <label for="password" class="form-label">Contraseña:</label>
+                              <input type="password" id="password" class="form-control" placeholder="Escribe aquí">
+                          </div>
+                          <div class="text-center">
+                              <button class="btn btn-success" id="inicio">Ingresar</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
           </div>
-          <div class="mb-4"> <!-- mb-4 para más espacio -->
-            <label for="password" class="form-label">Contraseña:</label>
-            <input type="password" id="password" class="form-control" placeholder="Escribe aquí">
-          </div>
-          <button class="btn btn-success" id="inicio">Ingresar</button>
-        </div>
       </div>
-    </div>
   </main>
   <footer class="text-muted">
-    <div class="container">
-      <p class="float-end">
-        <a href="#">Volver arriba</a>
-      </p>
-      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
+      <div class="container">
+          <p class="float-end">
+              <a href="#">Volver arriba</a>
+          </p>
+          <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
+      </div>
   </footer>
   <script src="js/login.js"></script>
   <script src="Desafiate.js"></script>
 
 </body>
+
 
 </html>
