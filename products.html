@@ -43,9 +43,36 @@
       <p class="lead">Verás aquí todos los productos de la categoría seleccionada.</p>
     </div>
     <div class="container">
-      <div class="row">
-        <div class="list-group" id="product-list-container" style="flex-direction: row; flex-wrap: wrap;">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="btn-group" role="group">
+            <button id="sortAscPrice" class="btn btn-light">Precio ↑</button>
+            <button id="sortDescPrice" class="btn btn-light">Precio ↓</button>
+            <button id="sortByRelevance" class="btn btn-light">Relevancia</button>
+          </div>
         </div>
+        <div class="col-md-6">
+          <input type="search" id="searchInput" class="form-control" placeholder="Buscar productos...">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="rangeFilterPriceMin">Precio mínimo:</label>
+          <input type="number" class="form-control" id="rangeFilterPriceMin">
+        </div>
+        <div class="col-md-6">
+          <label for="rangeFilterPriceMax">Precio máximo:</label>
+          <input type="number" class="form-control" id="rangeFilterPriceMax">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <button id="rangeFilterPrice" class="btn btn-primary">Filtrar</button>
+          <button id="clearRangeFilter" class="btn btn-secondary">Limpiar</button>
+        </div>
+      </div>
+      <div class="row" id="product-list-container">
+        <!-- Aquí se insertarán los productos dinámicamente -->
       </div>
     </div>
   </main>
