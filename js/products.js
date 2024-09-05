@@ -97,6 +97,15 @@ function setupEventListeners() {
         filteredArray.sort((a, b) => b.soldCount - a.soldCount);
         showProductsList();
     });
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+        let searchText = this.value.toLowerCase();
+        filteredArray = productsArray.filter(product => 
+            product.name.toLowerCase().includes(searchText) || 
+            product.description.toLowerCase().includes(searchText)
+        );
+        showProductsList();
+    });
 }
 
 function setProductID(id) {
