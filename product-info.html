@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>eMercado - Todo lo que busques está aquí</title>
+  <title>eMercado - Productos</title>
 
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
             <a class="nav-link" href="index.html">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="categories.html">Categorías</a>
+            <a class="nav-link active" href="products.html">Productos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="sell.html">Vender</a>
@@ -37,10 +37,42 @@
       </div>
     </div>
   </nav>
-  <main>
+  <main class="pb-5">
+    <div class="text-center p-4">
+      <h2>Productos</h2>
+      <p class="lead">Verás aquí todos los productos de la categoría seleccionada.</p>
+    </div>
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <div class="btn-group" role="group">
+            <button id="sortAscPrice" class="btn btn-light">Precio ↑</button>
+            <button id="sortDescPrice" class="btn btn-light">Precio ↓</button>
+            <button id="sortByRelevance" class="btn btn-light">Relevancia</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input type="search" id="searchInput" class="form-control" placeholder="Buscar productos...">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="rangeFilterPriceMin">Precio mínimo:</label>
+          <input type="number" class="form-control" id="rangeFilterPriceMin">
+        </div>
+        <div class="col-md-6">
+          <label for="rangeFilterPriceMax">Precio máximo:</label>
+          <input type="number" class="form-control" id="rangeFilterPriceMax">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <button id="rangeFilterPrice" class="btn btn-primary">Filtrar</button>
+          <button id="clearRangeFilter" class="btn btn-secondary">Limpiar</button>
+        </div>
+      </div>
+      <div class="row" id="product-list-container">
+        <!-- Aquí se insertarán los productos dinámicamente -->
       </div>
     </div>
   </main>
@@ -62,7 +94,7 @@
   </div>
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/init.js"></script>
-  <script src="js/product-info.js"></script>
+  <script src="js/products.js"></script>
   <script src="js/Desafiate.js"></script>
 </body>
 
