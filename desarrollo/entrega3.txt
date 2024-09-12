@@ -1,0 +1,41 @@
+Cambios en products.html
+
+-Se agregan botones para ordenar por precio (ascendente y descendente) y relevancia (descendente). Los botones con id="sortAscPrice", 
+id="sortDescPrice", y id="sortByRelevance" permiten ordenar los productos en función del precio y la relevancia.
+-Se agregan campos para filtrar por rango de precios (inputs de tipo number con id="rangeFilterPriceMin" y id="rangeFilterPriceMax" ) 
+y botones para aplicar y limpiar el filtro (botones id="rangeFilterPrice" y id="clearRangeFilter"). Agregamos un mínimo de 0 a los inputs 
+de los precios, algo que inicialmente no habíamos contemplado y hacía que fuera posible buscar precios negativos. 
+-Se mantiene el contenedor donde se insertan los productos dinámicamente, con las medidas fijadas en la entrega anterior para asegurar que sea 
+responsivo.
+-Se incluye un campo de búsqueda para filtrar productos en tiempo real (como parte del Desafíate). El campo de búsqueda con id="searchInput" 
+permite filtrar los productos mientras se escribe, mostrándonos coincidencias con el nombre y/o la descripción del producto.
+
+Cambios en products.js:
+
+-Se toma el ID de la categoría del almacenamiento local y se usa para hacer la solicitud a la API. Viendo que en algunas categorías no habían 
+productos, se añadió una verificación que dice si hay o no productos en esa categoría. Si no los hay, aparece un mensaje diciendo eso.
+-Se implementan funciones para mostrar la lista de productos, aplicar filtros de precio, ordenar por precio y relevancia, como las que se usan 
+en categories.js.
+-Se implementa la funcionalidad para guardar el ID del producto seleccionado en el almacenamiento local y redirigir a product-info.html en 
+función del producto elegido.
+-Se agrega un buscador en tiempo real que filtra por nombre y descripción del producto (Desafíate). En las primeras pruebas no funcionaba 
+bien por un tema de lógica en el planteo de la función, y al borrar lo que uno escribía, no se volvían a mostrar todos los productos, como 
+se esperaría, sino que había que recargar la página. Con esta función sí es «dinámico». Eso se logró creando la variable filteredArray, que es 
+la que permite que se restablezca la lista completa cuando se borra el texto en la barra de búsqueda. El buscador filtra productsArray y guarda 
+el resultado en filteresArray.
+
+Cambios en producto-info.html:
+
+-Se mantiene una estructura simple con un contenedor donde se insertará dinámicamente la información detallada del producto. Se pensaron las 
+medidas como las del contenedor de la página de productos, para que también sea responsivo.
+
+Producto-info.js:
+
+-Se saca el ID del producto del almacenamiento local y se usa para hacer la solicitud a la API. Se añadió un evento click en products para que, al 
+seleccionar un producto, se guarde el productID en localStorage y se redirija a product-info.html. El productID guardado en localStorage 
+es utilizado en product-info.js para hacer una solicitud a la API y obtener toda la información del producto que el usuario seleccionó.
+-Se creó una función para mostrar la información detallada del producto, incluyendo nombre, descripción, categoría, precio, cantidad de 
+vendidos y un carrusel con las imágenes del producto.
+-Considerando la posibilidad de que suceda algo similar a las categorías sin productos, se creó una función que prevé la chance de que 
+haya algún producto sin información (no los revisamos todos), entonces showErrorMessage verifica esto y hace que aparezca un mensaje si 
+no hay información disponible.
