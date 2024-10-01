@@ -39,34 +39,72 @@
   </nav>
   <main class="pb-5">
     <div class="text-center p-4">
-      <h2>Detalles del producto</h2>
+        <h2>Detalles del producto</h2>
     </div>
     <div class="container">
-      <div id="product-info-container">
-        <!-- Aquí se insertará la información del producto dinámicamente -->
-      </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-12 mb-4">
+                <div id="product-info-container">
+                    <!-- Aquí se insertará la información del producto dinámicamente -->
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div id="related-products-container">
+                    <!-- Aquí se insertarán los productos relacionados al que se está viendo dinámicamente -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="comment-section" class="mt-4">
+                    <div id="comments-container">
+                        <!-- Aquí se insertarán los comentarios dinámicamente -->
+                    </div>
+                    <div class="mt-4">
+                        <h4>Deja tu comentario</h4>
+                        <form id="comment-form">
+                            <div class="mb-3">
+                                <label for="comment-text" class="form-label">Comentario</label>
+                                <textarea class="form-control" id="comment-text" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Calificación</label>
+                                <select class="form-select" id="rating" required>
+                                    <option value="">Selecciona una calificación</option>
+                                    <option value="1">1 estrella</option>
+                                    <option value="2">2 estrellas</option>
+                                    <option value="3">3 estrellas</option>
+                                    <option value="4">4 estrellas</option>
+                                    <option value="5">5 estrellas</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </main>
-  <footer class="text-muted">
-    <div class="container">
+</main>
+<footer class="text-muted">
+  <div class="container">
       <p class="float-end">
-        <a href="#">Volver arriba</a>
+          <a href="#">Volver arriba</a>
       </p>
       <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
-  </footer>
-  <div id="spinner-wrapper">
-    <div class="lds-ring">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
   </div>
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/init.js"></script>
-  <script src="js/product-info.js"></script>
-  <script src="js/Desafiate.js"></script>
+</footer>
+<div id="spinner-wrapper">
+  <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>
+</div>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/init.js"></script>
+<script src="js/product-info.js"></script>
 </body>
 
 </html>
