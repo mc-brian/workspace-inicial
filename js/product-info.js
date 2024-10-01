@@ -148,7 +148,7 @@ function handleCommentSubmission(event) {
         score: parseInt(rating),
         description: commentText,
         user: loggedInUser,
-        dateTime: formatDate(new Date())
+        dateTime: new Date().toISOString()
     };
     comments.push(newComment);
     showComments(comments);
