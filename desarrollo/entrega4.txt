@@ -1,0 +1,27 @@
+Sobre produc-info.html
+
+Se agregó un contenedor para los comentarios (comments-container).
+Se agregó un formulario para que los usuarios puedan dejar comentarios, incluyendo un área de texto para el comentario y un select para la calificación.
+Se agregó un contenedor para los productos relacionados (related-products-container).
+Utilizamos el sistema de grillas de Bootstrap para mantener la consistencia en responsividad con entregas anteriores.
+
+Sobre product-info.js
+
+Evento DOMContentLoaded: Ahora verifica el estado de inicio de sesión del usuario, ahora pide también datos de productos relacionados y comentarios. Setea el event listener para el formulario de comentarios.
+
+checkUserLogin(): Verifica si hay un usuario logueado y ajusta la interfaz a partir de eso. Busca el nombre de usuario en localStorage, si existe, muestra el nombre y el formulario de comentarios; si no existe, oculta el formulario y muestra un mensaje de inicio de sesión, para redirigir a login.html. 
+
+showComments(comments):
+
+Propósito: Muestra los comentarios del producto. Genera HTML para cada comentario, incluyendo usuario, fecha, calificación y texto. Lo sinserta en el contenedor que se creó para eso (comments-container)
+
+showRelatedProducts(relatedProducts): es la función que busca y muestra los productos relacionados. Genera HTML para cada producto relacionado con su imagen y nombre, hace que cada producto sea clickeable para cargar su información e inserta los productos relacionados cada uno en su contenedor designado
+
+
+setProductID(id): Cambia el producto mostrado cuando se selecciona un producto relacionado al que se está viendo. Guarda el ID del nuevo producto en localStorage y recarga la página para mostrar la información del nuevo producto.
+
+
+handleCommentSubmission(event): es la función que hicimos para manejar el envío de nuevos comentarios. Previene el comportamiento por defecto del formulario, verificando si el usuario está logueado antes de permitir enviarlo.
+Si no está logueado, redirige a la página de inicio de sesión. Si está logueado, crea un nuevo objeto de comentario con los datos ingresados. Agrega el nuevo comentario al array de comentarios y actualiza la visualización instantáneamente.
+
+function formatDate(date): función para cambiar el formato de la fecha de ISO a la que queremos (DD/MM/AA hh:mm:ss)
