@@ -7,6 +7,7 @@
   <title>eMercado - Todo lo que busques está aquí</title>
 
   <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/styles.css" rel="stylesheet">
 </head>
@@ -21,7 +22,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav w-100 justify-content-between">
           <li class="nav-item">
-            <a class="nav-link active" href="index.html">Inicio</a>
+            <a class="nav-link" href="index.html">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="categories.html">Categorías</a>
@@ -36,60 +37,74 @@
       </div>
     </div>
   </nav>
-  <main>
-    <div class="jumbotron text-center"></div>
-    <div class="album py-5 bg-light">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm custom-card cursor-active" id="autos">
-              <img class="bd-placeholder-img card-img-top" src="img/cars_index.jpg"
-                alt="Imgagen representativa de la categoría 'Autos'">
-              <h3 class="m-3">Autos</h3>
-              <div class="card-body">
-                <p class="card-text">Los mejores precios en autos 0 kilómetro, de alta y media gama.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm custom-card cursor-active" id="juguetes">
-              <img class="bd-placeholder-img card-img-top" src="img/toys_index.jpg"
-                alt="Imgagen representativa de la categoría 'Juguetes'">
-              <h3 class="m-3">Juguetes</h3>
-              <div class="card-body">
-                <p class="card-text">Encuentra aquí los mejores precios para niños/as de cualquier edad.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm custom-card cursor-active" id="muebles">
-              <img class="bd-placeholder-img card-img-top" src="img/furniture_index.jpg"
-                alt="Imgagen representativa de la categoría 'Muebles'">
-              <h3 class="m-3">Muebles</h3>
-              <div class="card-body">
-                <p class="card-text">Muebles antiguos, nuevos y para ser armados por uno mismo.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <a class="btn btn-light btn-lg btn-block" href="categories.html">Y mucho más!</a>
-        </div>
-      </div>
+  <main class="pb-5">
+    <div class="text-center p-4">
+        <h2>Detalles del producto</h2>
     </div>
-  </main>
-  <footer class="text-muted">
     <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 mb-4">
+                <div id="product-info-container">
+                    <!-- Aquí se insertará la información del producto dinámicamente -->
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div id="related-products-container">
+                    <!-- Aquí se insertarán los productos relacionados al que se está viendo dinámicamente -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="comment-section" class="mt-4">
+                    <div id="comments-container">
+                        <!-- Aquí se insertarán los comentarios dinámicamente -->
+                    </div>
+                    <div class="mt-4">
+                        <h4>Deja tu comentario</h4>
+                        <form id="comment-form">
+                            <div class="mb-3">
+                                <label for="comment-text" class="form-label">Comentario</label>
+                                <textarea class="form-control" id="comment-text" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Calificación</label>
+                                <select class="form-select" id="rating" required>
+                                    <option value="">Selecciona una calificación</option>
+                                    <option value="1">1 estrella</option>
+                                    <option value="2">2 estrellas</option>
+                                    <option value="3">3 estrellas</option>
+                                    <option value="4">4 estrellas</option>
+                                    <option value="5">5 estrellas</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="text-muted">
+  <div class="container">
       <p class="float-end">
-        <a href="#">Volver arriba</a>
+          <a href="#">Volver arriba</a>
       </p>
       <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a></p>
-    </div>
-  </footer>
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/index.js"></script>
-  <script src="js/init.js"></script>
-  <script src="js/Desafiate.js"></script>
+  </div>
+</footer>
+<div id="spinner-wrapper">
+  <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+  </div>
+</div>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/init.js"></script>
+<script src="js/product-info.js"></script>
 </body>
 
 </html>
