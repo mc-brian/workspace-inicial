@@ -2,9 +2,28 @@ let productsArray = [];
 let filteredArray = [];
 let minPrice = undefined;
 let maxPrice = undefined;
+let loggedInUser = localStorage.getItem('loggedInUser');
 
 document.addEventListener("DOMContentLoaded", function () {
     let catID = localStorage.getItem("catID");
+    
+    // Asegura que arranque en Falso si no existe
+    if (localStorage.getItem(`${loggedInUser}_darkMode`) === null) {
+        localStorage.setItem(`${loggedInUser}_darkMode`, 'false');
+    } 
+    
+    loadDarkModePreference(); // Carga la preferencia de modo oscuro
+
+    // Manejo del cierre de sesión
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', handleLogout);
+    }
+
+    // Verificar si el usuario ha iniciado sesión
+    if (!loggedInUser) {
+        location.href = "login.html";
+    }
 
     fetch(`https://japceibal.github.io/emercado-api/cats_products/${catID}.json`)
         .then(response => response.json())
@@ -27,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function showProductsList() {
     let productListContainer = document.getElementById("product-list-container");
     productListContainer.innerHTML = "";
-    
+
     filteredArray.forEach(product => {
         if (
             (minPrice === undefined || product.cost >= minPrice) &&
@@ -68,13 +87,13 @@ function setupEventListeners() {
     document.getElementById("rangeFilterPrice").addEventListener("click", function() {
         minPrice = document.getElementById("rangeFilterPriceMin").value;
         maxPrice = document.getElementById("rangeFilterPriceMax").value;
-        
+
         minPrice = minPrice !== "" ? parseInt(minPrice) : undefined;
         maxPrice = maxPrice !== "" ? parseInt(maxPrice) : undefined;
-        
+
         showProductsList();
     });
-    
+
     document.getElementById("clearRangeFilter").addEventListener("click", function() {
         document.getElementById("rangeFilterPriceMin").value = "";
         document.getElementById("rangeFilterPriceMax").value = "";
@@ -82,17 +101,17 @@ function setupEventListeners() {
         maxPrice = undefined;
         showProductsList();
     });
-    
+
     document.getElementById("sortAscPrice").addEventListener("click", function() {
         filteredArray.sort((a, b) => a.cost - b.cost);
         showProductsList();
     });
-    
+
     document.getElementById("sortDescPrice").addEventListener("click", function() {
         filteredArray.sort((a, b) => b.cost - a.cost);
         showProductsList();
     });
-    
+
     document.getElementById("sortByRelevance").addEventListener("click", function() {
         filteredArray.sort((a, b) => b.soldCount - a.soldCount);
         showProductsList();
@@ -105,10 +124,30 @@ function setupEventListeners() {
             product.description.toLowerCase().includes(searchText)
         );
         showProductsList();
-    });
+    });
 }
 
 function setProductID(id) {
     localStorage.setItem("productID", id);
     window.location = "product-info.html";
+}
+
+function loadDarkModePreference() {
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === 'true';
+    applyDarkMode(isDarkMode);
+}
+
+function applyDarkMode(isDarkMode) {
+    if (isDarkMode) {
+        document.body.classList.add('bg-dark', 'text-white');
+    } else {
+        document.body.classList.remove('bg-dark', 'text-white');
+    }
+}
+
+// Manejo del cierre de sesión
+function handleLogout(event) {
+    event.preventDefault();
+    localStorage.removeItem('loggedInUser'); // Eliminar la sesión del usuario
+    window.location.href = 'login.html';    // Redirigir a la página de inicio de sesión
 }
