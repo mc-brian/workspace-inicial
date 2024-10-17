@@ -1,50 +1,90 @@
-// Declaramos variables globales para usar en varias funciones, cosa que antes no habíamos hecho
+// Declaramos variables globales para usar en varias funciones
 let product;
 let comments = [];
 let loggedInUser = localStorage.getItem('loggedInUser');
 
 document.addEventListener("DOMContentLoaded", function () {
-    checkUserLogin();
+    checkUserLogin(); // Verifica el inicio de sesión del usuario
+    if (localStorage.getItem(`${loggedInUser}_darkMode`) === null) {
+        localStorage.setItem(`${loggedInUser}_darkMode`, 'false');
+    } // Aseguramos que la preferencia de modo oscuro esté en Falso por defecto
+    loadDarkModePreference(); // Carga la preferencia de modo oscuro por usuario
     let productID = localStorage.getItem("productID");
 
     fetch(`https://japceibal.github.io/emercado-api/products/${productID}.json`)
-    .then(response => response.json())
-    .then(data => {
-        product = data;
-        showProductInfo(product);
-        showRelatedProducts(product.relatedProducts);
-        return fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`);
-    })
-    .then(response => response.json())
-    .then(data => {
-        comments = data;
-        showComments(comments);
-    })
-    .catch(error => {
-        console.error("Error en fetch:", error);
-        showErrorMessage();
+        .then(response => response.json())
+        .then(data => {
+            product = data;
+            showProductInfo(product); // Muestra la información del producto
+            showRelatedProducts(product.relatedProducts); // Muestra los productos relacionados
+            return fetch(`https://japceibal.github.io/emercado-api/products_comments/${productID}.json`);
+        })
+        .then(response => response.json())
+        .then(data => {
+            const savedComments = JSON.parse(localStorage.getItem(`comments_${productID}`)) || [];
+            comments = [...data, ...savedComments]; // Combina los comentarios obtenidos y los guardados
+            showComments(comments); // Muestra los comentarios
+        })
+        .catch(error => {
+            console.error("Error en fetch:", error);
+            showErrorMessage(); // Muestra un mensaje de error
+        });
+
+    window.addEventListener('storage', function(e) {
+        if (e.key === `${loggedInUser}_darkMode`) {
+            loadDarkModePreference(); // Carga de nuevo la preferencia de modo oscuro
+        }
     });
 
-    // Agregamos un event listener para el formulario de comentarios.
     document.getElementById('comment-form').addEventListener('submit', handleCommentSubmission);
+
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function() {
+            localStorage.removeItem('userSession');
+            localStorage.removeItem('loggedInUser'); // Elimina el usuario logueado
+            window.location.href = 'login.html';
+        });
+    }
 });
 
+function loadDarkModePreference() {
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === 'true';
+    if (isDarkMode !== null) {
+        applyDarkMode(isDarkMode);
+    } else {
+        applyDarkMode(false);
+    }
+}
+
+function applyDarkMode(isDarkMode) {
+    if (isDarkMode) {
+        document.body.classList.add('bg-dark', 'text-white');
+        document.querySelectorAll('.form-control, .form-select').forEach(element => {
+            element.classList.add('bg-dark', 'text-light', 'border-secondary');
+        });
+    } else {
+        document.body.classList.remove('bg-dark', 'text-white');
+        document.querySelectorAll('.form-control, .form-select').forEach(element => {
+            element.classList.remove('bg-dark', 'text-light', 'border-secondary');
+        });
+    }
+}
+
 function checkUserLogin() {
-    
     const userInfo = document.getElementById('user-info');
     const commentForm = document.getElementById('comment-form');
 
     if (loggedInUser && loggedInUser !== "") {
-        userInfo.textContent = loggedInUser;
+        userInfo.textContent = loggedInUser; // Muestra el nombre del usuario
         userInfo.style.display = 'inline-block';
-        commentForm.style.display = 'block';
+        commentForm.style.display = 'block'; // Muestra el formulario de comentarios
     } else {
         userInfo.style.display = 'none';
         commentForm.style.display = 'none';
-        showLoginMessage();
-        
-        // Redirigir a la página de inicio de sesión
-        location.href = "login.html";
+        showLoginMessage(); // Muestra el mensaje de inicio de sesión
+
+        location.href = "login.html"; // Redirige a login si no hay sesión activa
     }
 }
 
@@ -53,13 +93,14 @@ function showLoginMessage() {
     const loginMessage = document.createElement('div');
     loginMessage.className = 'alert alert-info';
     loginMessage.textContent = 'Debes iniciar sesión para dejar un comentario.';
-    commentSection.appendChild(loginMessage);
+    commentSection.appendChild(loginMessage); // Agrega mensaje al DOM
 }
 
 function showProductInfo(product) {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
     let productInfoContainer = document.getElementById("product-info-container");
     let productInfoHTML = `
-        <div class="list-group-item">
+        <div class="list-group-item ${isDarkMode ? 'bg-dark text-light' : 'bg-white text-dark'}">
             <div class="row">
                 <div class="col-12 col-md-6">
                     <h3>${product.name}</h3>
@@ -72,11 +113,11 @@ function showProductInfo(product) {
                 <div class="col-12 col-md-6">
                     <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
-                            ${product.images.map((img, index) => `
-                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                            ${product.images.map((img, index) => 
+                                `<div class="carousel-item ${index === 0 ? 'active' : ''}">
                                     <img src="${img}" class="d-block w-100" alt="${product.name}">
-                                </div>
-                            `).join('')}
+                                </div>`
+                            ).join('')}
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -95,28 +136,30 @@ function showProductInfo(product) {
 }
 
 function showComments(comments) {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
     let commentsContainer = document.getElementById("comments-container");
     let commentsHTML = `
         <h4>Comentarios</h4>
-        ${comments.map(comment => `
-            <div class="comment">
+        ${comments.map(comment => 
+            `<div class="comment ${isDarkMode ? 'bg-dark text-light' : 'bg-white text-dark'}">
                 <p><strong>${comment.user}</strong> - ${formatDate(new Date(comment.dateTime))}</p>
                 <p>${"★".repeat(comment.score)}${"☆".repeat(5 - comment.score)}</p>
                 <p>${comment.description}</p>
-            </div>
-        `).join('')}
+            </div>`
+        ).join('')}
     `;
     commentsContainer.innerHTML = commentsHTML;
 }
 
 function showRelatedProducts(relatedProducts) {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
     let relatedProductsContainer = document.getElementById("related-products-container");
     let relatedProductsHTML = `
         <h4>Productos relacionados</h4>
         <div class="row">
             ${relatedProducts.map(product => `
-                <div class="col-md-3">
-                    <div class="card mb-3" onclick="setProductID(${product.id})">
+                <div class="col-md-3 col-sm-6 col-12">
+                    <div class="card mb-3 ${isDarkMode ? 'bg-dark text-light' : 'bg-white text-dark'}" onclick="setProductID(${product.id})">
                         <img src="${product.image}" class="card-img-top" alt="${product.name}">
                         <div class="card-body">
                             <h5 class="card-title">${product.name}</h5>
@@ -151,19 +194,27 @@ function handleCommentSubmission(event) {
         dateTime: new Date().toISOString()
     };
     comments.push(newComment);
+
+    // Guardamos los comentarios en localStorage
+    const productID = localStorage.getItem("productID");
+    const savedComments = JSON.parse(localStorage.getItem(`comments_${productID}`)) || [];
+    savedComments.push(newComment);
+    localStorage.setItem(`comments_${productID}`, JSON.stringify(savedComments));
+
     showComments(comments);
     event.target.reset();
 }
 
+// Función simplificada para formatear la fecha
 function formatDate(date) {
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = date.getDate().toString().padStart(2, '0');
-    let hours = date.getHours().toString().padStart(2, '0');
-    let minutes = date.getMinutes().toString().padStart(2, '0');
-    let seconds = date.getSeconds().toString().padStart(2, '0');
-    
-    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+    return date.toLocaleString('es-ES', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
 }
 
 function showErrorMessage() {
