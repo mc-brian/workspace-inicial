@@ -60,13 +60,28 @@ function loadDarkModePreference() {
 function applyDarkMode(isDarkMode) {
     if (isDarkMode) {
         document.body.classList.add('bg-dark', 'text-white');
+        
+        // Aplicar estilos oscuros a los formularios, campos y otros elementos
         document.querySelectorAll('.form-control, .form-select').forEach(element => {
             element.classList.add('bg-dark', 'text-light', 'border-secondary');
         });
+        
+        // Aplicar estilos oscuros a la información del producto
+        document.querySelectorAll('.list-group-item, .comment, .card').forEach(element => {
+            element.classList.add('bg-dark', 'text-light');
+        });
+
     } else {
         document.body.classList.remove('bg-dark', 'text-white');
+        
+        // Revertir los estilos cuando se desactiva el modo oscuro
         document.querySelectorAll('.form-control, .form-select').forEach(element => {
             element.classList.remove('bg-dark', 'text-light', 'border-secondary');
+        });
+        
+        // Revertir los estilos en la información del producto
+        document.querySelectorAll('.list-group-item, .comment, .card').forEach(element => {
+            element.classList.remove('bg-dark', 'text-light');
         });
     }
 }
@@ -97,7 +112,7 @@ function showLoginMessage() {
 }
 
 function showProductInfo(product) {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === 'true'; // Asegurarnos que sea por usuario
     let productInfoContainer = document.getElementById("product-info-container");
     let productInfoHTML = `
         <div class="list-group-item ${isDarkMode ? 'bg-dark text-light' : 'bg-white text-dark'}">
@@ -136,7 +151,7 @@ function showProductInfo(product) {
 }
 
 function showComments(comments) {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === 'true';
     let commentsContainer = document.getElementById("comments-container");
     let commentsHTML = `
         <h4>Comentarios</h4>
@@ -152,7 +167,7 @@ function showComments(comments) {
 }
 
 function showRelatedProducts(relatedProducts) {
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === 'true';
     let relatedProductsContainer = document.getElementById("related-products-container");
     let relatedProductsHTML = `
         <h4>Productos relacionados</h4>
