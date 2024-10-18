@@ -1,0 +1,31 @@
+HTML - Estructura de my-profile.html
+Formulario de Perfil:
+Campos obligatorios: Nombre, Apellido y E-mail son obligatorios.
+Imagen de perfil: Se agrega una opción para cambiar la foto utilizando un input de tipo file.
+Modo Oscuro: Un switch que permite alternar entre Modo Día y Noche.
+Botón de Guardar Cambios: Al hacer clic, se guardarán los datos ingresados en localStorage.
+
+JavaScript - Manejo del Perfil
+
+Validación del formulario
+Se aplica validación del formulario con Bootstrap. Si los campos obligatorios no están completos, el formulario no se enviará y se mostrarán los 
+mensajes de error.
+
+Cargar los datos del perfil desde localStorage
+Al cargar la página, se busca la información guardada en localStorage. Si es la primera vez, solo se muestra el email del usuario logueado.
+
+Guardar los datos del perfil
+Esta función guarda los datos ingresados en el formulario en localStorage bajo la clave del usuario autenticado.
+Se guardan también en local storage las preferencias del usuario en tanto al modo de vista de la página. 
+
+Cambiar la foto de perfil
+Permite al usuario seleccionar una imagen de su dispositivo y mostrarla como foto de perfil. La imagen se convierte a Base64 
+y se guarda en localStorage.
+
+Implementación de Modo Día / Modo Noche en product-info.html
+Esta funcionalidad permite al usuario alternar entre un diseño claro y uno oscuro en la página de product-info.html. La preferencia del modo se 
+guarda en localStorage para que persista incluso si el usuario abandona la página o cierra el navegador.
+El switch es el que está en el perfl del usuario, ya que desde ahí es que se manejan las preferencias. 
+En product-info.js se crearon las funciones necesarias para que se cargue la preferencia del usuario y en base a eso se defina y aplique el modo 
+claro/oscuro.
+
