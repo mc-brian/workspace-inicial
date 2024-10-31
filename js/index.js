@@ -28,4 +28,22 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.removeItem('loggedInUser'); // Eliminar la sesión del usuario
         window.location.href = 'login.html';    // Redirigir a la página de inicio de sesión
     }
+
+    updateCartBadge(); //Agrega el badge! 
 });
+
+function updateCartBadge() {
+    const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const totalItems = cartItems.reduce(
+        (sum, item) => sum + (item.quantity || 1),
+        0
+    );
+    const badge = document.getElementById("cart-badge");
+    
+    if (totalItems > 0) {
+        badge.textContent = totalItems; // Muestra la cantidad
+        badge.style.display = "inline"; // Asegura que el badge esté visible
+    } else {
+        badge.style.display = "none"; // Oculta el badge si no hay productos
+    }
+}
