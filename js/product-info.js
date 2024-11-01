@@ -187,10 +187,12 @@ function showProductInfo(product) {
 
 // Función que maneja el clic en el botón "Comprar"
 function handleBuyClick() {
-  // Obtener productos actuales del carrito
-  let cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  
+  // Obtener productos del carrito específicos del usuario
+  let cartProducts = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`)) || [];
 
-  // Verificar si el producto ya está en el carrito
+  // Verificar si el producto ya está en el carrito del usuario
   const existingProductIndex = cartProducts.findIndex(
     (item) => item.id === product.id
   );
@@ -207,8 +209,8 @@ function handleBuyClick() {
     });
   }
 
-  // Actualizar localStorage
-  localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
+  // Actualizar localStorage con carrito específico del usuario
+  localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartProducts));
 
   // Actualizar el badge del carrito
   updateCartBadge();
@@ -218,7 +220,8 @@ function handleBuyClick() {
 }
 
 function updateCartBadge() {
-  const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`)) || [];
   const totalItems = cartItems.reduce(
     (sum, item) => sum + (item.quantity || 1),
     0
@@ -226,10 +229,9 @@ function updateCartBadge() {
   const badge = document.getElementById("cart-badge");
   if (badge) {
     badge.textContent = totalItems;
+    badge.style.display = totalItems > 0 ? "inline" : "none";
   }
 }
-
-// Asegurarse de que el badge se actualice al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
   updateCartBadge();
 });

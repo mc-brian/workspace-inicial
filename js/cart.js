@@ -39,17 +39,17 @@ function handleLogout(event) {
   }
   
   function loadCart() {
-    const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
-    const cartContainer = document.getElementById("cart-items");
     const loggedInUser = localStorage.getItem("loggedInUser");
+    const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`)) || [];
+    const cartContainer = document.getElementById("cart-items");
     const isDarkMode =
       localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
   
     if (cartItems.length === 0) {
       cartContainer.innerHTML = `
-              <div class="alert ${isDarkMode ? "alert-dark" : "alert-info"}">
-                  No hay productos en el carrito.
-              </div>`;
+        <div class="alert ${isDarkMode ? "alert-dark" : "alert-info"}">
+            No hay productos en el carrito.
+        </div>`;
       updateSubtotal(0);
       return;
     }
@@ -136,7 +136,8 @@ function handleLogout(event) {
   }
   
   function updateTotalSubtotal() {
-    const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`)) || [];
     
     // Calculamos subtotal en pesos uruguayos
     const totalInPesos = cartItems.reduce((sum, item) => {
@@ -149,19 +150,11 @@ function handleLogout(event) {
     document.getElementById("subtotal").textContent = totalInPesos.toFixed(2);
   }
   
-  function validateAndUpdateQuantity(input) {
-    let value = parseInt(input.value);
-    if (isNaN(value) || value < 1) {
-      value = 1;
-    }
-    input.value = value;
-    updateQuantity(input.dataset.index, value);
-  }
-  
   function updateQuantity(index, newQuantity) {
-    const cartItems = JSON.parse(localStorage.getItem("cartProducts"));
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`));
     cartItems[index].quantity = parseInt(newQuantity);
-    localStorage.setItem("cartProducts", JSON.stringify(cartItems));
+    localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartItems));
   
     const itemSubtotalElement = document.querySelectorAll(".item-subtotal")[index];
     itemSubtotalElement.textContent = calculateItemSubtotal(cartItems[index]);
@@ -170,15 +163,17 @@ function handleLogout(event) {
   }
   
   function removeFromCart(index) {
-    const cartItems = JSON.parse(localStorage.getItem("cartProducts"));
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`));
     cartItems.splice(index, 1);
-    localStorage.setItem("cartProducts", JSON.stringify(cartItems));
+    localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartItems));
     loadCart();
     updateCartBadge();
   }
   
   function updateCartBadge() {
-    const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`)) || [];
     const totalItems = cartItems.reduce(
       (sum, item) => sum + (item.quantity || 1),
       0
@@ -186,6 +181,7 @@ function handleLogout(event) {
     const badge = document.getElementById("cart-badge");
     if (badge) {
       badge.textContent = totalItems;
+      badge.style.display = totalItems > 0 ? "inline" : "none";
     }
   }
   
@@ -197,7 +193,6 @@ function handleLogout(event) {
   }
   
   function applyDarkMode(isDarkMode) {
-    // Lógica de modo oscuro previa
     document.body.classList.toggle("bg-dark", isDarkMode);
     document.body.classList.toggle("text-white", isDarkMode);
   
