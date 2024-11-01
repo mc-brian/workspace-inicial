@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } 
     
     loadDarkModePreference(); // Carga la preferencia de modo oscuro
+    updateCartBadge(); //Agrega el badge! 
 
     // Manejo del cierre de sesión
     const logoutLink = document.getElementById('logout-link');
@@ -75,6 +76,22 @@ function showProductsList() {
     });
 }
 
+function updateCartBadge() {
+    const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const totalItems = cartItems.reduce(
+        (sum, item) => sum + (item.quantity || 1),
+        0
+    );
+    const badge = document.getElementById("cart-badge");
+    
+    if (totalItems > 0) {
+        badge.textContent = totalItems; // Muestra la cantidad
+        badge.style.display = "inline"; // Asegura que el badge esté visible
+    } else {
+        badge.style.display = "none"; // Oculta el badge si no hay productos
+    }
+}
+
 function showNoProductsMessage() {
     let productListContainer = document.getElementById("product-list-container");
     productListContainer.innerHTML = `
@@ -133,16 +150,33 @@ function setProductID(id) {
 }
 
 function loadDarkModePreference() {
-    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === 'true';
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
     applyDarkMode(isDarkMode);
 }
 
 function applyDarkMode(isDarkMode) {
-    if (isDarkMode) {
-        document.body.classList.add('bg-dark', 'text-white');
-    } else {
-        document.body.classList.remove('bg-dark', 'text-white');
+    document.body.classList.toggle("bg-dark", isDarkMode);
+    document.body.classList.toggle("text-white", isDarkMode);
+
+    document.querySelectorAll(".list-group-item").forEach((item) => {
+        item.classList.toggle("bg-dark", isDarkMode);
+        item.classList.toggle("text-white", isDarkMode);
+        item.classList.toggle("border-secondary", isDarkMode);
+    });
+    const filterContainer = document.getElementById("filter-container");
+    if (filterContainer) {
+        filterContainer.classList.toggle("bg-dark", isDarkMode);
+        filterContainer.classList.toggle("text-white", isDarkMode);
     }
+    document.querySelectorAll(".btn").forEach((btn) => {
+        btn.classList.toggle("btn-dark", isDarkMode);
+        btn.classList.toggle("border-secondary", isDarkMode);
+    });
+    document.querySelectorAll('input[type="number"]').forEach((input) => {
+        input.classList.toggle("bg-dark", isDarkMode);
+        input.classList.toggle("text-white", isDarkMode);
+        input.classList.toggle("border-secondary", isDarkMode);
+    });
 }
 
 // Manejo del cierre de sesión

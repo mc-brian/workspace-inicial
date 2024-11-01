@@ -87,6 +87,8 @@ function sortAndShowCategories(sortCriteria, categoriesArray) {
 // que el documento se encuentra cargado, es decir, se encuentran todos los
 // elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
+    loadDarkModePreference();
+
     getJSONData(CATEGORIES_URL).then(function (resultObj) {
         if (resultObj.status === "ok") {
             currentCategoriesArray = resultObj.data;
@@ -145,4 +147,53 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         showCategoriesList();
     });
+
+    updateCartBadge(); //Agrega el badge! 
 });
+
+function updateCartBadge() {
+    const cartItems = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const totalItems = cartItems.reduce(
+        (sum, item) => sum + (item.quantity || 1),
+        0
+    );
+    const badge = document.getElementById("cart-badge");
+    
+    if (totalItems > 0) {
+        badge.textContent = totalItems; // Muestra la cantidad
+        badge.style.display = "inline"; // Asegura que el badge esté visible
+    } else {
+        badge.style.display = "none"; // Oculta el badge si no hay productos
+    }
+}
+
+
+function loadDarkModePreference() {
+    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
+    applyDarkMode(isDarkMode);
+}
+
+function applyDarkMode(isDarkMode) {
+    document.body.classList.toggle("bg-dark", isDarkMode);
+    document.body.classList.toggle("text-white", isDarkMode);
+
+    document.querySelectorAll(".list-group-item").forEach((item) => {
+        item.classList.toggle("bg-dark", isDarkMode);
+        item.classList.toggle("text-white", isDarkMode);
+        item.classList.toggle("border-secondary", isDarkMode);
+    });
+    const filterContainer = document.getElementById("filter-container");
+    if (filterContainer) {
+        filterContainer.classList.toggle("bg-dark", isDarkMode);
+        filterContainer.classList.toggle("text-white", isDarkMode);
+    }
+    document.querySelectorAll(".btn").forEach((btn) => {
+        btn.classList.toggle("btn-dark", isDarkMode);
+        btn.classList.toggle("border-secondary", isDarkMode);
+    });
+    document.querySelectorAll('input[type="number"]').forEach((input) => {
+        input.classList.toggle("bg-dark", isDarkMode);
+        input.classList.toggle("text-white", isDarkMode);
+        input.classList.toggle("border-secondary", isDarkMode);
+    });
+}
