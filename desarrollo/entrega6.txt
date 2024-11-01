@@ -1,0 +1,39 @@
+Se agregaron en cart.html los contenedores necesarios para insertar todos los elementos que estamos generando desde el .js. 
+Intentamos mantener el diseño responsivo y aplicar el modo oscuro al carrito.
+
+Sobre product-info.js
+
+showProductInfo(product): Además de mostar la información del producto, incluyendo nombre, precio, descripción, categoría, cantidad vendida e imágenes 
+en un carrusel, ahora tiene un botón de "Comprar"
+
+handleBuyClick(): Maneja el clic en el botón "Comprar". Primero chequea los productos actuales del carrito desde localStorage (esto es para poder 
+incrementar la cantidad y trabajar con varios productos). Si el producto ya está en el carrito, incrementa la cantidad; si no, lo agrega con cantidad 1.
+Actualiza este dato en el localStorage y nos redirige a cart.html.
+
+updateCartBadge(): Actualiza el badge del carrito con la cantidad total de productos. Suma las cantidades de los productos en el carrito y muestra el
+total en el badge, usando Bootstrap.
+
+Sobre cart.js
+
+Evento DOMContentLoaded: Actualiza el badge del carrito al cargar la página y carga dinámicamente los productos en el carrito y el subtotal.
+
+fetchExchangeRate(): responsable de obtener el tipo de cambio de USD a pesos uruguayos desde una API externa. Realiza una solicitud 
+asincrónica para acceder a las tasas de cambio, filtra el valor de venta del dólar y lo almacena en la variable exchangeRate. Llama a loadCart() para
+cargar el carrito de compras con los precios actualizados en pesos.
+
+loadCartProducts(): Carga y muestra los productos almacenados en el carrito. Genera HTML para cada producto con nombre, imagen, costo y unidades.
+Permite modificar la cantidad de unidades y eliminar productos del carrito con la papelerita. Toma en consideración las distitnas monedas, y pasa los 
+precios que se encuentrna en dólares a pesos uruguayos, tomando el valor que obtuvimos de la API.
+
+updateSubtotal(): Calcula el subtotal de los productos en el carrito y actualiza su visualización en tiempo real cuando se cambia la cantidad de
+unidades.
+
+modifyProductQuantity(productId, quantity): Modifica la cantidad de unidades de un producto específico en el carrito. Si la cantidad es 0, elimina
+el producto; si no, actualiza la cantidad en localStorage y el subtotal.
+
+removeProductFromCart(productId): Elimina un producto específico del carrito y actualiza localStorage, el subtotal y la visualización del carrito.
+
+finalizePurchase(): Botón que por ahora no realiza ninguna acción, pero está previsto para completar la compra.
+
+updateCartBadge(): Actualiza el badge del carrito con la cantidad total de productos, sumando las cantidades de los productos en el carrito y 
+guardándolo en el localstorage para mostrrlo en el badge en las demás páginas.

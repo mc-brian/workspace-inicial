@@ -4,6 +4,23 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCartBadge(); //Para agregar el badge!
   });
   
+  // Verificar si el usuario ha iniciado sesión
+  if (!localStorage.getItem('loggedInUser')) {
+    location.href = "login.html";
+}
+
+// Manejo del cierre de sesión
+const logoutLink = document.getElementById('logout-link');
+if (logoutLink) {
+    logoutLink.addEventListener('click', handleLogout);
+}
+
+function handleLogout(event) {
+    event.preventDefault();
+    localStorage.removeItem('loggedInUser'); // Eliminar la sesión del usuario
+    window.location.href = 'login.html';    // Redirigir a la página de inicio de sesión
+}
+
   let exchangeRate = 0; // Variable global para el tipo de cambio
   
   // Función para obtener el tipo de cambio actualizado
