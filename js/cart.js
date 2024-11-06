@@ -149,6 +149,15 @@ function handleLogout(event) {
   
     document.getElementById("subtotal").textContent = totalInPesos.toFixed(2);
   }
+
+  function validateAndUpdateQuantity(input) {
+    let value = parseInt(input.value);
+    if (isNaN(value) || value < 1) {
+      value = 1;
+    }
+    input.value = value;
+    updateQuantity(input.dataset.index, value);
+  }
   
   function updateQuantity(index, newQuantity) {
     const loggedInUser = localStorage.getItem("loggedInUser");
