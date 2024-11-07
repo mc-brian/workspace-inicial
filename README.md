@@ -6,7 +6,7 @@
 
 Este sitio simula un entorno de compra online, ofreciendo a los usuarios una experiencia fluida y moderna de navegación de productos, desde el inicio de sesión hasta el manejo del carrito y la confirmación de compra. Este proyecto integra diversas tecnologías y buenas prácticas en desarrollo web, y destaca el aprendizaje de habilidades como la manipulación del DOM, el consumo de APIs, y la persistencia de datos en `localStorage`.
 
-El sitio es accesible vía **[GitHub Pages](URL_DEL_REPOSITORIO_GITHUB_PAGES)**, y se ha desarrollado un diseño completamente **responsivo** utilizando Bootstrap para optimizar la experiencia en diferentes dispositivos.
+El sitio es accesible vía **[GitHub Pages](https://mc-brian.github.io/workspace-inicial/)**, y se ha desarrollado un diseño completamente **responsivo** utilizando Bootstrap para optimizar la experiencia en diferentes dispositivos.
 
 ## Funcionalidades
 
