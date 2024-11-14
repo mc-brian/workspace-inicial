@@ -68,6 +68,7 @@ function showCategoriesList() {
 
         document.getElementById("cat-list-container").innerHTML = htmlContentToAppend;
     }
+    applyDarkMode(localStorage.getItem(`${loggedInUser}_darkMode`) === "true");
 }
 
 function sortAndShowCategories(sortCriteria, categoriesArray) {
@@ -170,24 +171,27 @@ function updateCartBadge() {
 
 
 function loadDarkModePreference() {
-    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
+    const isDarkMode =
+    localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
+  if (isDarkMode !== null) {
     applyDarkMode(isDarkMode);
+  } else {
+    applyDarkMode(false);
+  }
 }
 
 function applyDarkMode(isDarkMode) {
     document.body.classList.toggle("bg-dark", isDarkMode);
     document.body.classList.toggle("text-white", isDarkMode);
 
-    document.querySelectorAll(".list-group-item").forEach((item) => {
+    // Aplicar a todos los elementos de la lista de categorías
+    document.querySelectorAll("#cat-list-container .list-group-item").forEach((item) => {
         item.classList.toggle("bg-dark", isDarkMode);
         item.classList.toggle("text-white", isDarkMode);
         item.classList.toggle("border-secondary", isDarkMode);
     });
-    const filterContainer = document.getElementById("filter-container");
-    if (filterContainer) {
-        filterContainer.classList.toggle("bg-dark", isDarkMode);
-        filterContainer.classList.toggle("text-white", isDarkMode);
-    }
+
+    // Aplicar el modo oscuro a los botones y entradas de texto en la interfaz de categorías
     document.querySelectorAll(".btn").forEach((btn) => {
         btn.classList.toggle("btn-dark", isDarkMode);
         btn.classList.toggle("border-secondary", isDarkMode);
@@ -198,3 +202,4 @@ function applyDarkMode(isDarkMode) {
         input.classList.toggle("border-secondary", isDarkMode);
     });
 }
+  
