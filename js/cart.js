@@ -262,7 +262,11 @@ function applyDarkMode(isDarkMode) {
     el.classList.toggle("bg-dark", isDarkMode);
     el.classList.toggle("text-white", isDarkMode);
     el.classList.toggle("border-secondary", isDarkMode);
-});
+  });
+  document.querySelectorAll("select, select option").forEach((el) => {
+    el.classList.toggle("bg-dark", isDarkMode);
+    el.classList.toggle("text-white", isDarkMode);
+  });
 }
 
 // Actualizar dinámicamente los costos de envío y total
