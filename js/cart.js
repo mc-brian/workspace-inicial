@@ -8,6 +8,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const addressForm = document.getElementById("address-form");
   const paymentForm = document.getElementById("payment-form");
 
+  document.getElementById("finalize-button").addEventListener("click", function() {
+    const cartItems = JSON.parse(localStorage.getItem(`${localStorage.getItem("loggedInUser")}_cartProducts`)) || [];
+    if (cartItems.length === 0) {
+        alert("El carrito está vacío. Añade productos antes de finalizar la compra.");
+        return;
+    }
+    const shippingModal = new bootstrap.Modal(document.getElementById("shippingModal"));
+    shippingModal.show();
+});
+
+  document.getElementById("shipping-type").addEventListener("change", updateShippingCost);
+
   if (shippingForm) {
       shippingForm.addEventListener("submit", validateShipping);
   }
@@ -77,12 +89,19 @@ function loadCart() {
   const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`)) || [];
   const cartContainer = document.getElementById("cart-items");
   const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
+//chequeamos si el carrito está vacío y si lo está, desplegamos un mensaje
+  const emptyMessage = document.getElementById("cart-empty-message");
+  const finalizeButton = document.getElementById("finalize-button");
 
   if (cartItems.length === 0) {
-      cartContainer.innerHTML = `<div class="alert ${isDarkMode ? "alert-dark" : "alert-info"}">No hay productos en el carrito.</div>`;
-      updateSubtotal(0);
+      cartContainer.style.display = "none";
+      emptyMessage.style.display = "block";
+      finalizeButton.disabled = true; // Deshabilitar el botón si no hay productos
       return;
   }
+  cartContainer.style.display = "block";
+  emptyMessage.style.display = "none";
+  finalizeButton.disabled = false; // Habilitar el botón si hay productos
   //Creamos los elementos en HTML para el carrito
   let cartHTML = "";
   cartItems.forEach((item, index) => {
@@ -111,7 +130,9 @@ function loadCart() {
                                           La cantidad debe ser mayor a 0.
                                       </div>
                                   </div>
-                                  <p class="card-text mt-2">Subtotal: ${item.currency} <span class="item-subtotal">${calculateItemSubtotal(item)}</span> ${item.currency === 'USD' ? `(UYU ${calculateItemSubtotalInPesos(item)})` : ''}</p>
+                                  <p class="card-text mt-2">Subtotal: ${item.currency} 
+    <span class="item-subtotal">${calculateItemSubtotal(item)}</span> 
+    ${item.currency === 'USD' ? `(UYU <span class="item-subtotal-pesos">${calculateItemSubtotalInPesos(item)}</span>)` : ''}</p>
                               </div>
                           </div>
                       </div>
@@ -119,7 +140,14 @@ function loadCart() {
   });
 
   cartContainer.innerHTML = cartHTML;
-  updateTotalSubtotal(); //Función para que el subtotal se actualice en el resumen de compra en función de los productos que se van añadiendp
+  document.querySelectorAll(".quantity-input").forEach(input => {
+    input.addEventListener("input", () => {
+        validateAndUpdateQuantity(input);
+        updateTotalSubtotal();  // Actualiza el subtotal general en tiempo real
+    });
+});
+
+updateTotalSubtotal(); // Inicializa el subtotal general
 }
 
 //Las funciones que calculan los subtotales propios de cada producto (cuando hay más de una unidad del mismo) y del total de productos. 
@@ -128,7 +156,11 @@ function calculateItemSubtotal(item) {
 }
 
 function calculateItemSubtotalInPesos(item) {
-  return item.currency === 'USD' ? (item.cost * exchangeRate * (item.quantity || 1)).toFixed(2) : item.cost;
+    // Multiplica el costo en pesos por la cantidad de unidades del producto
+    const subtotalInPesos = item.currency === 'USD' 
+        ? (item.cost * exchangeRate * (item.quantity || 1)).toFixed(2) 
+        : (item.cost * (item.quantity || 1)).toFixed(2);
+    return subtotalInPesos;
 }
 
 function updateTotalSubtotal() {
@@ -146,24 +178,29 @@ function updateTotalSubtotal() {
 
 //Con estas funciones manejamos la adición de más unidades de productos que ya están en el carrito.
 function validateAndUpdateQuantity(input) {
-  let value = parseInt(input.value);
-  if (isNaN(value) || value < 1) {
-      value = 1;
-  }
-  input.value = value;
-  updateQuantity(input.dataset.index, value);
+    let value = parseInt(input.value);
+    if (isNaN(value) || value < 1) {
+        value = 1;
+    }
+    input.value = value;
+    updateQuantity(input.dataset.index, value);
 }
 
 function updateQuantity(index, newQuantity) {
-  const loggedInUser = localStorage.getItem("loggedInUser");
-  const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`));
-  cartItems[index].quantity = parseInt(newQuantity);
-  localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartItems));
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`));
+    cartItems[index].quantity = parseInt(newQuantity);
+    localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartItems));
 
-  const itemSubtotalElement = document.querySelectorAll(".item-subtotal")[index];
-  itemSubtotalElement.textContent = calculateItemSubtotal(cartItems[index]);
+    const itemSubtotalElement = document.querySelectorAll(".item-subtotal")[index];
+    const itemSubtotalPesosElement = document.querySelectorAll(".item-subtotal-pesos")[index];
 
-  updateTotalSubtotal();
+    // Actualiza el subtotal en la moneda original y en pesos
+    itemSubtotalElement.textContent = calculateItemSubtotal(cartItems[index]);
+    itemSubtotalPesosElement.textContent = `UYU ${calculateItemSubtotalInPesos(cartItems[index])}`;
+
+    // Actualiza el subtotal general y el costo de envío
+    updateTotalSubtotal();
 }
 
 //Con esta función se pueden eliminar productos del carrito // Desafíate entrega 7!
@@ -220,20 +257,26 @@ function applyDarkMode(isDarkMode) {
       summaryContainer.classList.toggle("bg-dark", isDarkMode);
       summaryContainer.classList.toggle("text-white", isDarkMode);
   }
+
+  document.querySelectorAll(".card, .modal-content, .form-control").forEach((el) => {
+    el.classList.toggle("bg-dark", isDarkMode);
+    el.classList.toggle("text-white", isDarkMode);
+    el.classList.toggle("border-secondary", isDarkMode);
+});
 }
 
 // Actualizar dinámicamente los costos de envío y total
 function updateShippingCost() {
-  const shippingType = document.getElementById("shipping-type").value;
-  const subtotal = parseFloat(document.getElementById("subtotal").textContent);
-  let shippingCost = 0;
-  if (shippingType) {
-      shippingCost = (subtotal * parseFloat(shippingType)) / 100;
-  }
-  const totalCost = subtotal + shippingCost;
+    const shippingType = document.getElementById("shipping-type").value;
+    const subtotal = parseFloat(document.getElementById("subtotal").textContent);
+    let shippingCost = 0;
+    if (shippingType) {
+        shippingCost = (subtotal * parseFloat(shippingType)) / 100;
+    }
+    const totalCost = subtotal + shippingCost;
 
-  document.getElementById("shipping-cost").textContent = shippingCost.toFixed(2);
-  document.getElementById("total-cost").textContent = totalCost.toFixed(2);
+    document.getElementById("shipping-cost").textContent = shippingCost.toFixed(2);
+    document.getElementById("total-cost").textContent = totalCost.toFixed(2);
 }
 
 // Validación de los campos de la sección del envío

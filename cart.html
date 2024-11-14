@@ -72,6 +72,15 @@
               <!-- Contenedor para agregr los productos en el carritio -->
               <div class="col-md-8" id="cart-items-container">
                   <h2>Productos en el Carrito</h2>
+<!-- Para cuando el carrito está vacío -->
+<div id="cart-empty-message" class="text-center p-4" style="display: none;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-cart-x" viewBox="0 0 16 16" style="color: #6c757d;">
+      <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
+      <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+  </svg>
+  <p class="mt-3" style="opacity: 0.7;">Tu carrito está vacío. ¡Explora nuestros productos!</p><br>
+  <a class="mt-3" style="opacity: 0.7;" href="categories.html">Ir a nuestro catálogo</a>
+</div>
                   <div id="cart-items"></div>
               </div>
 
@@ -82,10 +91,9 @@
                       <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
                       <p><strong>Costo de Envío:</strong> $<span id="shipping-cost">0.00</span></p>
                       <p><strong>Total:</strong> $<span id="total-cost">0.00</span></p>
-                      <button class="btn btn-primary" id="finalize-button" data-bs-toggle="modal"
-                          data-bs-target="#shippingModal">
-                          Finalizar Compra
-                      </button>
+                      <button class="btn btn-primary" id="finalize-button" data-bs-toggle="modal" data-bs-target="#shippingModal" disabled>
+                        Finalizar Compra
+                    </button>
                   </div>
               </div>
           </div>
@@ -97,7 +105,7 @@
               <div class="modal-content">
                   <div class="modal-header">
                       <h5 class="modal-title" id="shippingModalLabel">Tipo de Envío</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
                   </div>
                   <div class="modal-body">
                       <form id="shipping-form" class="needs-validation" novalidate>
@@ -126,7 +134,7 @@
               <div class="modal-content">
                   <div class="modal-header">
                       <h5 class="modal-title" id="addressModalLabel">Dirección de Envío</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
                   </div>
                   <div class="modal-body">
                       <form id="address-form" class="needs-validation" novalidate>
@@ -202,7 +210,7 @@
               <div class="modal-content">
                   <div class="modal-header">
                       <h5 class="modal-title" id="paymentModalLabel">Forma de Pago</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
                   </div>
                   <div class="modal-body">
                       <form id="payment-form" class="needs-validation" novalidate>
