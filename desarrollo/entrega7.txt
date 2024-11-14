@@ -1,0 +1,48 @@
+Modificaciones en cart.html - Agregado de modales para el proceso de compra
+
+-Se agregaron el costo del envío y el total en el resumen de la compra
+-Modal de Tipo de Envío: Permite seleccionar entre tipos de envío (Premium, Express, Standard).
+-Modal de Dirección de Envío: Permite ingresar la dirección de envío.
+-Modal de Forma de Pago: Permite elegir entre tarjeta de crédito o transferencia bancaria y mostrar campos adicionales según la elección.
+-Modal de Compra Exitosa: Se muestra al completar la compra e incluye una factura que se puede guardar.
+
+Adiciones/actualizaciones en cart.js
+
+-Validación de modales: Los modales de envío, dirección y pago tienen formularios que se validan antes de avanzar a la siguiente etapa. Cada 
+formulario usa clases de Bootstrap para mostrar mensajes de validación.
+-loadCart(): Carga los productos del carrito desde localStorage y los muestra.
+Se lo modificó de modo que si el carrito está vacío, muestra un mensaje y deshabilita el botón de compra. También calcula y muestra los subtotales de 
+cada producto y el total general.
+-calculateItemSubtotal() y calculateItemSubtotalInPesos(): Calculan los subtotales en la moneda original del producto y los pasa a pesos si
+están en dólares.
+-updateShippingCost(): Calcula el costo de envío basado en el subtotal y el tipo de envío seleccionado (Premium, Express, Standard).
+-updateTotalSubtotal(): Actualiza el subtotal general del carrito, recalculando costos de envío y el total cada vez que se cambia la cantidad de
+productos o el tipo de envío.
+-validateShipping(): Valida los campos del formulario de tipo de envío y abre el modal de dirección si es válido.
+-validateAddress(): Valida los campos del formulario de dirección y abre el modal de forma de pago si es válido.
+-validatePayment(): Valida el formulario de pago y muestra el modal de compra exitosa si es válido.
+-showSuccessModal(): Muestra el modal de éxito una vez completada la compra y genera una factura.
+-generateInvoice(): Genera la factura en HTML con el detalle de los productos, el tipo de envío, subtotal, costo de envío y total.
+-saveInvoice(): Permite guardar la factura como un archivo HTML descargable.
+-loadLocalities(): Carga dinámicamente las localidades de un departamento seleccionado usando una API externa. Muestra un mensaje de “Cargando 
+localidades…” mientras obtiene los datos.
+-displayPaymentFields(): Cambia los campos mostrados en el modal de forma de pago, dependiendo del método seleccionado.
+Si el usuario selecciona “Tarjeta de Crédito”, se muestran campos para el número de tarjeta, fecha de expiración y CVV.
+Si selecciona “Transferencia Bancaria”, se muestra un campo para el número de cuenta.
+-clearCart(): Limpia el carrito después de una compra exitosa.
+
+Cambios adicionales atendiendo a sugerencias previas
+
+-Mejoramos la aplicación del modo oscuro en categories.html, products.html y lo agregamos en los nuevos elementos del carrito.
+-Agregamos una animación dentro del modal de compra exitosa, probando Animate.css 
+-Establecimos un límite para los archivos que pueden cargarse como foto de perfil del usuario
+-Quitamos el mesaje de alerta que teníamos cuando el carrito se encontraba vacío, para colocar uno que se ajuste a la estética que dimos al sitio. 
+Ahora se genera un mensaje que es manejado por la función que carga al carrito y tiene además del mensaje del carrito vacío, un ícono de Bootstrap para 
+aportar cierto apoyo visual a lo que transmitimos con el mensaje y un link a la página de caterories, para que el usuario pueda ir al catálogo y
+seleccionar algún producto.
+-Quitamos la alerta que aparecía cuando se guardaban los datos del usuario, y ahora aparece un modal con el mensaje de éxito, que se mantiene un par de
+segundos y desaparece.
+
+
+
+
