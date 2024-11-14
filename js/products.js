@@ -74,6 +74,7 @@ function showProductsList() {
             productListContainer.innerHTML += productHTML;
         }
     });
+    applyDarkMode(localStorage.getItem(`${loggedInUser}_darkMode`) === "true");
 }
 
 function updateCartBadge() {
@@ -151,8 +152,13 @@ function setProductID(id) {
 }
 
 function loadDarkModePreference() {
-    const isDarkMode = localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
+    const isDarkMode =
+    localStorage.getItem(`${loggedInUser}_darkMode`) === "true";
+  if (isDarkMode !== null) {
     applyDarkMode(isDarkMode);
+  } else {
+    applyDarkMode(false);
+  }
 }
 
 function applyDarkMode(isDarkMode) {

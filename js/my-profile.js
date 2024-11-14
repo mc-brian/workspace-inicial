@@ -79,7 +79,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Guardar los datos en localStorage usando el nombre de usuario como clave
         localStorage.setItem(`${loggedInUser}_profileData`, JSON.stringify(profileData));
-        alert('Perfil actualizado con éxito.');
+
+    const successModal = new bootstrap.Modal(document.getElementById("profile-success-modal"));
+    successModal.show();
+
+    setTimeout(() => {
+        successModal.hide();
+    }, 2000); // Cerrar después de 3 segundos
     }
 
     // Manejar el cierre de sesión
@@ -134,6 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.classList.remove('bg-dark', 'text-white');
             });
         }
+
+        document.querySelectorAll(".card, .modal-content, .form-control").forEach((el) => {
+            el.classList.toggle("bg-dark", isDarkMode);
+            el.classList.toggle("text-white", isDarkMode);
+            el.classList.toggle("border-secondary", isDarkMode);
+        });
     }
 
     // Desafíate - Manejar el cambio de imagen de perfil

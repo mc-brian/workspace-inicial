@@ -14,6 +14,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   </head>
 
   <body>
@@ -68,26 +69,191 @@
     </nav>
     <main>
       <div class="container mt-4">
-        <div class="row">
-          <!-- Contenedor para los productos en el carrito -->
-          <div class="col-md-8" id="cart-items-container">
-            <h2>Productos en el Carrito</h2>
-            <div id="cart-items"></div>
-          </div>
+          <div class="row">
+              <!-- Contenedor para agregr los productos en el carritio -->
+              <div class="col-md-8" id="cart-items-container">
+                  <h2>Productos en el Carrito</h2>
+<!-- Para cuando el carrito está vacío -->
+<div id="cart-empty-message" class="text-center p-4" style="display: none;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" class="bi bi-cart-x" viewBox="0 0 16 16" style="color: #6c757d;">
+      <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
+      <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+  </svg>
+  <p class="mt-3" style="opacity: 0.7;">Tu carrito está vacío. ¡Explora nuestros productos!</p><br>
+  <a class="mt-3" style="opacity: 0.7;" href="categories.html">Ir a nuestro catálogo</a>
+</div>
+                  <div id="cart-items"></div>
+              </div>
 
-          <!-- Contenedor para el resumen de la compra -->
-          <div class="col-md-4">
-            <h2>Resumen de Compra</h2>
-            <div id="summary-container">
-              <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
-              <button class="btn btn-primary" id="finalize-button">
-                Finalizar Compra
-              </button>
-            </div>
+              <!-- Resumen de la compra -->
+              <div class="col-md-4">
+                  <h2>Resumen de Compra</h2>
+                  <div id="summary-container" class="p-3 bg-light rounded">
+                      <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+                      <p><strong>Costo de Envío:</strong> $<span id="shipping-cost">0.00</span></p>
+                      <p><strong>Total:</strong> $<span id="total-cost">0.00</span></p>
+                      <button class="btn btn-primary" id="finalize-button" data-bs-toggle="modal" data-bs-target="#shippingModal" disabled>
+                        Finalizar Compra
+                    </button>
+                  </div>
+              </div>
           </div>
-        </div>
       </div>
-    </main>
+
+      <!-- Modal para la sección de Envío -->
+      <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="shippingModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="shippingModalLabel">Tipo de Envío</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form id="shipping-form" class="needs-validation" novalidate>
+                          <div class="mb-3">
+                              <label for="shipping-type" class="form-label">Seleccione el Tipo de Envío</label>
+                              <select id="shipping-type" class="form-select" required>
+                                  <option value="" disabled selected>Seleccione tipo de envío</option>
+                                  <option value="15">Premium (2-5 días) - 15%</option>
+                                  <option value="7">Express (5-8 días) - 7%</option>
+                                  <option value="5">Standard (12-15 días) - 5%</option>
+                              </select>
+                              <div class="invalid-feedback">
+                                  Por favor, seleccione un tipo de envío.
+                              </div>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Modal para la sección de la dirección de entrega -->
+      <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="addressModalLabel">Dirección de Envío</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form id="address-form" class="needs-validation" novalidate>
+                          <div class="mb-3">
+                              <label for="department" class="form-label">Departamento*</label>
+                              <select id="department" class="form-select" required>
+                                  <option value="" disabled selected>Seleccione departamento</option>
+                                  <option value="Artigas">Artigas</option>
+                                  <option value="Canelones">Canelones</option>
+                                  <option value="Cerro Largo">Cerro Largo</option>
+                                  <option value="Colonia">Colonia</option>
+                                  <option value="Durazno">Durazno</option>
+                                  <option value="Flores">Flores</option>
+                                  <option value="Florida">Florida</option>
+                                  <option value="Lavalleja">Lavalleja</option>
+                                  <option value="Maldonado">Maldonado</option>
+                                  <option value="Montevideo">Montevideo</option>
+                                  <option value="Paysandú">Paysandú</option>
+                                  <option value="Río Negro">Río Negro</option>
+                                  <option value="Rivera">Rivera</option>
+                                  <option value="Rocha">Rocha</option>
+                                  <option value="Salto">Salto</option>
+                                  <option value="San José">San José</option>
+                                  <option value="Soriano">Soriano</option>
+                                  <option value="Tacuarembó">Tacuarembó</option>
+                                  <option value="Treinta y Tres">Treinta y Tres</option>
+                              </select>
+                              <div class="invalid-feedback">
+                                  Por favor, seleccione un departamento.
+                              </div>
+                          </div>
+                          <div class="mb-3">
+                              <label for="locality" class="form-label">Localidad*</label>
+                              <select id="locality" class="form-select" required disabled>
+                                  <option value="" disabled selected>Seleccione localidad</option>
+                                  <!-- Las localidades se cargan dinámicamente traídas de la API -->
+                              </select>
+                              <div class="invalid-feedback">
+                                  Por favor, seleccione una localidad.
+                              </div>
+                          </div>
+                          <div class="mb-3">
+                              <label for="street" class="form-label">Calle*</label>
+                              <input type="text" class="form-control" id="street" required />
+                              <div class="invalid-feedback">
+                                  Por favor, ingrese la calle.
+                              </div>
+                          </div>
+                          <div class="mb-3">
+                              <label for="number" class="form-label">Número*</label>
+                              <input type="text" class="form-control" id="number" required />
+                              <div class="invalid-feedback">
+                                  Por favor, ingrese el número.
+                              </div>
+                          </div>
+                          <div class="mb-3">
+                              <label for="corner" class="form-label">Esquina*</label>
+                              <input type="text" class="form-control" id="corner" required />
+                              <div class="invalid-feedback">
+                                  Por favor, ingrese la esquina.
+                              </div>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Guardar y Continuar</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Modal para la sección del pago -->
+      <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="paymentModalLabel">Forma de Pago</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form id="payment-form" class="needs-validation" novalidate>
+                          <div class="mb-3">
+                              <label for="payment-method" class="form-label">Seleccione la Forma de Pago</label>
+                              <select id="payment-method" class="form-select" required>
+                                  <option value="" disabled selected>Seleccione forma de pago</option>
+                                  <option value="credit-card">Tarjeta de Crédito</option>
+                                  <option value="bank-transfer">Transferencia Bancaria</option>
+                              </select>
+                              <div class="invalid-feedback">
+                                  Por favor, seleccione una forma de pago.
+                              </div>
+                          </div>
+                          <!-- Campos específicos para cada método de pago -->
+                          <div id="payment-details"></div>
+                          <button type="submit" class="btn btn-success">Confirmar Compra</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Modal de Compra exitosa con el resumen de la compra -->
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="successModalLabel">¡Compra Exitosa!</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" onclick="location.reload();"></button>
+                  </div>
+                  <div class="modal-body">
+                      <p class="animate__animated animate__bounce">Gracias por su compra. A continuación, aquí está su factura, y también la enviaremos a su email:</p>
+                      <div id="invoice">
+                          <!-- Acá se genera la factura dinámicamente -->
+                      </div>
+                      <button class="btn btn-primary mt-3" id="save-invoice">Guardar Factura</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </main>
     <footer class="text-muted">
       <div class="container">
         <p class="float-end">
