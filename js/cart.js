@@ -201,6 +201,7 @@ function updateQuantity(index, newQuantity) {
 
     // Actualiza el subtotal general y el costo de envío
     updateTotalSubtotal();
+    location.reload();
 }
 
 //Con esta función se pueden eliminar productos del carrito // Desafíate entrega 7!
@@ -211,6 +212,7 @@ function removeFromCart(index) {
   localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartItems));
   loadCart();
   updateCartBadge();
+  location.reload();
 }
 
 //Esta función gestiona al badge. Toma la cantidad total de productos (contando la repetición de un  mismo producto) y la muestra en un badge en el 
