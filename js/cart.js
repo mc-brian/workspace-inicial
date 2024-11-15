@@ -239,32 +239,13 @@ function validateAndUpdateQuantity(input) {
 
 function updateQuantity(index, newQuantity) {
   const loggedInUser = localStorage.getItem("loggedInUser");
-  const cartItems = JSON.parse(
-    localStorage.getItem(`${loggedInUser}_cartProducts`)
-  );
+  const cartItems = JSON.parse(localStorage.getItem(`${loggedInUser}_cartProducts`));
   cartItems[index].quantity = parseInt(newQuantity);
-  localStorage.setItem(
-    `${loggedInUser}_cartProducts`,
-    JSON.stringify(cartItems)
-  );
+  localStorage.setItem(`${loggedInUser}_cartProducts`, JSON.stringify(cartItems));
 
-  const itemSubtotalElement =
-    document.querySelectorAll(".item-subtotal")[index];
-  const itemSubtotalPesosElement = document.querySelectorAll(
-    ".item-subtotal-pesos"
-  )[index];
-
-  // Actualizamos el subtotal de los productos en pesos
+  const itemSubtotalElement = document.querySelectorAll(".item-subtotal")[index];
   itemSubtotalElement.textContent = calculateItemSubtotal(cartItems[index]);
 
-  // Actualizamos el subtotal en pesos cuando el producto tenía precio originalmente en dólares
-  if (cartItems[index].currency === "USD") {
-    itemSubtotalPesosElement.textContent = `UYU ${calculateItemSubtotalInPesos(
-      cartItems[index]
-    )}`;
-  } else {
-    itemSubtotalPesosElement.textContent = ""; // Limpiamos cuando la moneda original es pesos
-  }
   updateTotalSubtotal();
 }
 
